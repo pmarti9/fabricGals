@@ -1,44 +1,42 @@
 const express = require("express");
-// const path = require("path");
-const PORT = process.env.PORT || 3001;
-const app = express();
-//mongo databaseurl and collections
-// lines 8-13 .. is this in the server file or can i use the routes folder and reference it here.
+const session = require("express-session");
+const passport = require("./config/passport");
 
-const db = require("./models")
-// Routes.
+const PORT = process.env.PORT || 3001;
+
+
+const db = require("./models");
 const app = express();
-app.use(express.static("routes"));
+// Routes.
 
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static("routes"));
 // Serve up static assets (usually on heroku)
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-}
+// if(process.env.NODE_ENV === "production") {
+//   app.use(express.static("client/build"));
+// }
 app.use(
-    session({ secret: "keyboard cat", resave: true, saveUninitialized: true })
-    );
-    app.use(passport.initialize());
-    app.use(passport.session());
+  session({ secret: "keyboard cat", resave: true, saveUninitialized: true })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+//requiring routes
+require("./routes/htmlRoutes.js")(app);
+require("./routes/apiRoutes.js")(app);
 
-
-    require("./routes/htmlRoutes.js")(app);
-  require("./routes/apiRoutes.js")(app);
-  
-  app.use(express.static("public"));
-// Define API r//Adding comments
-
+app.use(express.static("public"));
+//syncing daatabase, logging message to user
 db.sequelize.sync().then(() => {
-    app.listen(PORT, () => {
-      console.log(
-        "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
-        PORT,
-        PORT
-      );
-    });
+  app.listen(PORT, () => {
+    console.log(
+      "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
+      PORT,
+      PORT
+    );
   });
+});
 
 // Send every other request to the React app
 // Define any API routes before this runs
@@ -46,6 +44,3 @@ db.sequelize.sync().then(() => {
 //   res.sendFile(path.join(__dirname, "./client/build/index.html"));
 // });
 
-app.listen(PORT, () => {
-  console.log(`🌎 ==> API server now on port ${PORT}!`);
-});
