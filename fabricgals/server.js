@@ -24,8 +24,8 @@ app.use(
     app.use(passport.session());
 
 
-    require("./routes/html-routes.js")(app);
-  require("./routes/api-routes.js")(app);
+    require("./routes/htmlRoutes.js")(app);
+  require("./routes/apiRoutes.js")(app);
   
   app.use(express.static("public"));
 // Define API r//Adding comments
