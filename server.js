@@ -2,7 +2,7 @@ const express = require("express");
 const session = require("express-session");
 const passport = require("./config/passport");
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 
 const db = require("./models");
@@ -14,9 +14,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("routes"));
 // Serve up static assets (usually on heroku)
-// if(process.env.NODE_ENV === "production") {
-//   app.use(express.static("client/build"));
-// }
+if(process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
 app.use(
   session({ secret: "keyboard cat", resave: true, saveUninitialized: true })
 );
