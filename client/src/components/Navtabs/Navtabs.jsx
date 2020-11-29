@@ -26,7 +26,13 @@ function Navtabs() {
             Login
           </Link>
         </li>
-        
+        <li className="nav-item">
+          <Link 
+            to="/About" 
+            className={location.pathname === "/About" ? "nav-link active" : "nav-link"}>
+            About
+          </Link>
+        </li>
         
       </ul>
       </nav>
