@@ -3,11 +3,13 @@ const session = require("express-session");
 const passport = require("./config/passport");
 
 const PORT = process.env.PORT || 3000;
-
+const app = express();
+app.get("/", (req, res) => {
+  res.send("This is from express.js");
+});
 
 const db = require("./models");
-const app = express();
-// Routes.
+
 
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
@@ -27,7 +29,7 @@ app.use(passport.session());
 require("./routes/htmlRoutes.js")(app);
 require("./routes/apiRoutes.js")(app);
 
-app.use(express.static("public"));
+
 //syncing daatabase, logging message to user
 db.sequelize.sync().then(() => {
   app.listen(PORT, () => {
